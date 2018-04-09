@@ -4,8 +4,12 @@ import './App.css';
 class App extends Component {
   render() {
     return (
-      <div className="App">
-       Hello Cake App!
+      <div className="container">
+        <div className="text-center row">
+          <div className="col-md-12 fixed-top App__heading">
+             Cake Links Online Store
+          </div>
+        </div>
       </div>
     );
   }
