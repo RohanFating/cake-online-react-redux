@@ -1,6 +1,9 @@
 import AppConstants from '../constants/constants.js';
 import AppActionUtil from './action.util.js';
 
+/**
+ * AppActions class - to handle all event dispatch to reducer
+ */
 export default class AppActions {
     static processAction(action, dispatch) {
         switch (action.type) {

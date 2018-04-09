@@ -3,11 +3,12 @@ import fetchMock from 'fetch-mock';
 import ReactDOM from 'react-dom';
 import App from './App.js';
 import configureStore from './store/app.store.js';
-import AppConstant from './constants/constants.js'
+import AppConstant,{ BASE_URL } from './constants/constants.js'
 import { mockResponse } from './services/mock.response.js';
 const store = configureStore();
-const BASE_URL = 'http://ec2-52-209-201-89.eu-west-1.compute.amazonaws.com:5000/api/cakes';
-let storeSubscription;
+/**
+ * Unit testing for App Component
+ */
 describe('App Component should', () => {
 
       afterEach(() => {
@@ -30,9 +31,10 @@ describe('App Component should', () => {
               type: AppConstant.CAKE_INFO_LIST,
               data: []
             }); 
-            storeSubscription = store.subscribe(() => {
+            const storeSubscription = store.subscribe(() => {
               const state = store.getState();
               expect(state.cakeInfo.cakeInfoList.length).toBe(1);
+              storeSubscription();
             });
       })
 })

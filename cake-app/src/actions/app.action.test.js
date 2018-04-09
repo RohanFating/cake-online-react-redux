@@ -5,6 +5,9 @@ import AppConstant,{ BASE_URL } from '../constants/constants.js'
 import AppActions from './app.actions.js';
 import { mockResponse, mockAddCakeFormData } from '../services/mock.response.js';
 
+/**
+ * Unit testing for AppActions
+ */
 describe('App Actions should', () => {
 
     afterEach(() => {

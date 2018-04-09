@@ -1,4 +1,8 @@
 import { BASE_URL } from '../constants/constants.js';
+
+/**
+ * Cake service to handle all api service operations
+ */
 class CakeService {
 
     /**
