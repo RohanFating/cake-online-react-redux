@@ -1,6 +1,6 @@
 import AppConstant from '../constants/constants.js';
 
-export const initialState = {
+const initialFormState = {
     details: {
         name: {
             value: '',
@@ -28,7 +28,7 @@ export const initialState = {
  * @param state - maintain state of add cake component
  * @param action - action to perform state operation
  */
-export default function AddCakeReducer( state=initialState, action ) {
+export default function AddCakeReducer( state=initialFormState, action ) {
     switch(action.type) {
         case AppConstant.CAKE_FORM_DATA: 
         case AppConstant.CAKE_SUBMITTED: 

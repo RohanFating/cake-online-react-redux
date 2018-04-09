@@ -1,20 +1,23 @@
 import React from 'react';
 import fetchMock from 'fetch-mock';
 import ReactDOM from 'react-dom';
-import AddCakeComponent from './add-cake.component.js';
-import configureStore from '../../store/app.store.js';
 import { Provider } from 'react-redux';
 import {
   BrowserRouter as Router,
   Route,
 } from 'react-router-dom';
+import AddCakeComponent from './add-cake.component.js';
+import configureStore from '../../store/app.store.js';
 import AppConstant, { BASE_URL } from '../../constants/constants.js'
 import cakeService from '../../services/cake.service';
 import AppActions from '../../actions/app.actions.js';
 import { mockResponse, mockAddCakeFormData } from '../../services/mock.response.js';
-import { initialState } from '../../reducer/add-cake.reducer.js';
 
 const store = configureStore();
+
+/**
+ * Unit testing for AddCakeComponent
+ */
 describe('Add Cake Component should', () => {
 
   afterEach(() => {

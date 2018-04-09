@@ -17,6 +17,9 @@ export default class AddCakeComponent extends React.Component {
         this.yumFactors = YUM_FACTORS;
     }
 
+    /**
+     * Lifecycle hook componentWillUnmount to clean up component
+     */
     componentWillUnmount(){
         this.resetModels();
     }

@@ -1,8 +1,8 @@
 import React from 'react';
-import AppConstant from '../../constants/constants.js';
 import {
   Link
 } from 'react-router-dom';
+import AppConstant from '../../constants/constants.js';
 
 /**
  * CakeInfoComponent - To show list of all cakes to users
