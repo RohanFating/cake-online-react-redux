@@ -1,0 +1,8 @@
+.cake-info {
+    margin-top: 60px;
+}
+
+.cake-info__grid {
+    cursor: pointer;
+    height: 200px;
+}

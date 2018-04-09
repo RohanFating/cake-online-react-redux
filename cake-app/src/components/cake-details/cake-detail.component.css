@@ -1,0 +1,14 @@
+.cake-details {
+    margin-top: 100px;
+}
+
+.cake-details__grid {
+    cursor: pointer;
+    height: 350px;
+}
+
+@media ( max-width: 767px ) {
+    .cake-details__grid {
+        height: 150px;
+    }
+}

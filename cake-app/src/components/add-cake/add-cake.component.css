@@ -1,0 +1,9 @@
+.add-cake {
+    margin-top: 80px;
+    border: 1px soild;
+}
+
+.add-cake__comment {
+    width: 100%;
+    height: 50px;
+}
