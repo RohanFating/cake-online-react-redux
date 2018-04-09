@@ -27,7 +27,7 @@ export default class CakeInfoComponent extends React.Component {
                   Add you cake!
                  </Link>
               </div>
-              { this.props.cakeInfo.isError || this.props.cakeInfo.cakeInfoList.length === 0 ?
+              { this.props.cakeInfo.isError && this.props.cakeInfo.cakeInfoList.length === 0 ?
             <div className="col-md-12 text-danger my-5 text-center">Service Error, Please try later!</div> : this.renderCakeInfoList()}
             </div>
     )
