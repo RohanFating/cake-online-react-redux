@@ -1,6 +1,6 @@
 import AppConstant from '../constants/constants.js';
 
-const initialState = {
+export const initialState = {
     details: {
         name: {
             value: '',
