@@ -21,7 +21,7 @@ describe('App Actions should', () => {
     it('get cake info list', () => {
         const store = configureStore();
         fetchMock.getOnce(BASE_URL, JSON.stringify(mockResponse))
-        AppActions.processAction({ type: AppConstant.CAKE_INFO_LIST, data: [] }, store.dispatch);
+        store.dispatch(AppActions.processAction({ type: AppConstant.CAKE_INFO_LIST, data: [] }));
         const storeSubscription = store.subscribe(() => {
             const state = store.getState();
             expect(state.cakeInfo.cakeInfoList.length).toBeGreaterThan(0);
@@ -32,7 +32,7 @@ describe('App Actions should', () => {
     it('validated error on Cake Info list api call', () => {
         const store = configureStore();
         fetchMock.getOnce(BASE_URL, { status: 401, body: 'Error Response ' });
-        AppActions.processAction({ type: AppConstant.CAKE_INFO_LIST, data: [] }, store.dispatch);
+        store.dispatch(AppActions.processAction({ type: AppConstant.CAKE_INFO_LIST, data: [] }));
         let storeSubscription = store.subscribe((data) => {
             const state = store.getState();
             expect(state.cakeInfo.isError).toBe(true);
@@ -56,11 +56,9 @@ describe('App Actions should', () => {
             },
           isError: false
         };
-        AppActions.processAction({ type: AppConstant.RESET_DETAILS_DATA, data: cakeDetails }, store.dispatch);
+        store.dispatch(AppActions.processAction({ type: AppConstant.RESET_DETAILS_DATA, data: cakeDetails }));
         const storeSubscription= store.subscribe(() => {
             const state = store.getState();
-            console.log('D1'+ JSON.stringify(store.getState()))
-            console.log('state.cakeDetails.details.name'+state.cakeDetails.details.name)
             expect(state.cakeDetails.details.name).toBe('');
             storeSubscription();
         });
@@ -72,9 +70,9 @@ describe('App Actions should', () => {
     it('get cake details', () => {
         const store = configureStore();
         fetchMock.getOnce(`${BASE_URL}/sdfdsfssreff45w23`, JSON.stringify(mockResponse[0]));
-        AppActions.processAction({ type: AppConstant.CAKE_DETAILS, data: 'sdfdsfssreff45w23' }, store.dispatch);
+        store.dispatch(AppActions.processAction({ type: AppConstant.CAKE_DETAILS, data: 'sdfdsfssreff45w23' }));
         const storeSubscription = store.subscribe(() => {
-            const state = store.getState();
+            const state = store.getState();            
             expect(state.cakeDetails.details.name).toBe('My Cake');
             storeSubscription();
         });
@@ -83,9 +81,9 @@ describe('App Actions should', () => {
     it('Validate error on cake details api', () => {
         const store = configureStore();
         fetchMock.getOnce(`${BASE_URL}/sdfdsfreff45w23`, { status: 401, body: 'Error Response ' });
-        AppActions.processAction({ type: AppConstant.CAKE_DETAILS, data: 'sdfdsfreff45w23' }, store.dispatch);
+        store.dispatch(AppActions.processAction({ type: AppConstant.CAKE_DETAILS, data: 'sdfdsfreff45w23' }));
         const storeSubscription = store.subscribe(() => {
-            const state = store.getState();
+            const state = store.getState();            
             expect(state.cakeDetails.isError).toBe(true);
             storeSubscription();
         })
@@ -97,9 +95,10 @@ describe('App Actions should', () => {
     it('submit cake details on submitCake api call', () => {
         const store = configureStore();
         fetchMock.postOnce(BASE_URL, JSON.stringify(mockResponse));
-        AppActions.processAction({ type: AppConstant.SUBMIT_CAKE, data: mockAddCakeFormData }, store.dispatch);
+        store.dispatch(AppActions.processAction({ type: AppConstant.SUBMIT_CAKE, data: mockAddCakeFormData }));
         const storeSubscription = store.subscribe(() => {
             const state = store.getState();
+            expect(state.cakeFormDetails.isError).toBe(false);
             expect(state.cakeFormDetails.details.name.value).toBe('My Cake');
             storeSubscription();
         })
@@ -108,11 +107,10 @@ describe('App Actions should', () => {
     it('Validate error on submit cake details api', () => {
         const store = configureStore();
         fetchMock.postOnce(BASE_URL, { status: 401, body: 'Error Response ' });
-        AppActions.processAction({ type: AppConstant.SUBMIT_CAKE_SERVICE_ERROR, data: mockAddCakeFormData }, store.dispatch);
+        store.dispatch(AppActions.processAction({ type: AppConstant.SUBMIT_CAKE, data: mockAddCakeFormData }));
         const storeSubscription = store.subscribe(() => {
             const state = store.getState();
-            console.log(state.cakeFormDetails.isError)
-            expect(state.cakeFormDetails.isError).toBe(false);
+            expect(state.cakeFormDetails.isError).toBe(true);
             storeSubscription();
         })
     })

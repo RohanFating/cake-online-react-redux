@@ -5,26 +5,54 @@ import AppActionUtil from './action.util.js';
  * AppActions class - to handle all event dispatch to reducer
  */
 export default class AppActions {
-    static processAction(action, dispatch) {
+
+    static processAction(action) {
         switch (action.type) {
 
             case AppConstants.CAKE_INFO_LIST: 
-                 AppActionUtil.cakeInfoAction(dispatch);
-                 break;
+                 return AppActionUtil.getCakeInfo(action.data);
             case AppConstants.CAKE_FORM_DATA:
-                 AppActionUtil.updateFormData(dispatch, action.data);
-                 break;
+                 return AppActionUtil.updateFormData(action.data);
             case AppConstants.SUBMIT_CAKE:
-                 AppActionUtil.submitCakeAction(dispatch, action.data);
-                 break;
+                 return AppActionUtil.submitCakeAction( action.data);
             case AppConstants.CAKE_DETAILS:
-                 AppActionUtil.getCakeDetails(dispatch, action.data);
-                 break;
+                 return AppActionUtil.getCakeDetails(action.data);
             case AppConstants.RESET_DETAILS_DATA:
-                 AppActionUtil.clearCakeDetailsData(dispatch, action.data);
-                 break;
+                 return AppActionUtil.clearCakeDetailsData(action.data);
             default: 
                  break;
         }
     }
+
+    static getCakeInfoAction(data) {
+        return {
+            type: AppConstants.CAKE_INFO_LIST,
+            data: data
+        };
+    }
+    static getCakeDetailsAction(data) {
+        return {
+            type: AppConstants.CAKE_DETAILS,
+            data: data
+        };
+    }
+    static updateFormDetailsAction(data) {
+        return AppActionUtil.updateFormData({
+            type: AppConstants.CAKE_FORM_DATA,
+            data: data
+        });
+    }
+    static submitCakeDetailsAction(data) {
+        return {
+            type: AppConstants.SUBMIT_CAKE,
+            data: data
+        };
+    }
+    static resetCakeDetailsAction(data) {
+        return {
+            type: AppConstants.RESET_DETAILS_DATA,
+            data: data
+        };
+    }
+    
 }

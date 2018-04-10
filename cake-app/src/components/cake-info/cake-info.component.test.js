@@ -12,6 +12,10 @@ import AppConstant,{ BASE_URL } from '../../constants/constants.js'
 import cakeService from '../../services/cake.service';
 import AppActions from '../../actions/app.actions.js';
 import {mockResponse} from '../../services/mock.response.js';
+import Enzyme,{ shallow, mount } from 'enzyme';``
+import Adapter from 'enzyme-adapter-react-16';
+import spy from 'sinon';
+Enzyme.configure({ adapter: new Adapter() });
 const store = configureStore();
 
 /**
@@ -28,11 +32,13 @@ describe('Cake Info Component should', () => {
     const mock = fetchMock.getOnce(BASE_URL, JSON.stringify(mockResponse));
     const root = document.createElement('div');
     const props = { cakeInfo: {cakeInfoList: []} };
-    ReactDOM.render(
+    let component = mount(
     <Provider store={store}><Router><div><Route render={()=>{ return <CakeInfoComponent 
         updateCakeList ={(event, data)=> { return updateCakeInfoList(event)}} 
-        cakeInfo={ props.cakeInfo }/> }}></Route></div></Router></Provider>, root);
-
+        cakeInfo={ props.cakeInfo }/> }}></Route></div></Router></Provider>);
+        let componentInstance = component.find(CakeInfoComponent).instance();
+        
+        expect(component.find(CakeInfoComponent).length).toBe(1);
         const storeSubscription = store.subscribe(() => {
             const state = store.getState();
             expect(state.cakeInfo.cakeInfoList.length).toBe(1);
@@ -44,7 +50,7 @@ describe('Cake Info Component should', () => {
   it('render error view incase cake info list api fails', ()=>{
     const mock = fetchMock.getOnce(BASE_URL, { status: 401, body: 'Error Response ' });
     const root = document.createElement('div');
-    const props = { cakeInfo: {cakeInfoList: []} };
+    const props = { cakeInfo: {cakeInfoList: []}, isError: false };
     ReactDOM.render(
     <Provider store={store}><Router><div><Route render={()=>{ return <CakeInfoComponent 
         updateCakeList ={(event, data)=> { return updateCakeInfoList(event)}} 
@@ -60,5 +66,5 @@ describe('Cake Info Component should', () => {
 })
 
 function updateCakeInfoList(event) {
-AppActions.processAction( event, store.dispatch );
+store.dispatch(AppActions.processAction( event ) );
 }

@@ -4,17 +4,17 @@ export const mockAddCakeFormData = {
     details: {
         name: {
             value: 'My Cake',
-            isValid: false,
+            isValid: true,
             isTouched: false
         },
         comment: {
             value: 'Nice One',
-            isValid: false,
+            isValid: true,
             isTouched: false
         },
         imageUrl: {
             value: 'http://www.abc.com/abc.jpg',
-            isValid: false,
+            isValid: true,
             isTouched: false
         },
         yumFactor: 1

@@ -12,7 +12,9 @@ import AppConstant, { BASE_URL } from '../../constants/constants.js'
 import cakeService from '../../services/cake.service';
 import AppActions from '../../actions/app.actions.js';
 import { mockResponse, mockAddCakeFormData } from '../../services/mock.response.js';
-
+import Enzyme, { shallow, mount } from 'enzyme'; ``
+import Adapter from 'enzyme-adapter-react-16';
+Enzyme.configure({ adapter: new Adapter() });
 const store = configureStore();
 
 /**
@@ -29,20 +31,95 @@ describe('Add Cake Component should', () => {
     const mock = fetchMock.postOnce(BASE_URL, JSON.stringify(mockResponse));
     const root = document.createElement('div');
     let props = { cakeFormDetails: mockAddCakeFormData };
-    let component = ReactDOM.render(
+    const component = mount(
       <Provider store={store}><Router><div><Route render={() => {
         return <AddCakeComponent
           updateCakeList={(event, data) => { return updateCakeInfoList(event) }}
           cakeFormDetails={props.cakeFormDetails} />
-      }}></Route></div></Router></Provider>, root);
+      }}></Route></div></Router></Provider>);
+    const componentInstance = component.find(AddCakeComponent).instance();
+    expect(componentInstance.props.cakeFormDetails.details.name.value).toBe('My Cake');
+    expect(componentInstance.props.cakeFormDetails.details.comment.value).toBe('Nice One');
+    expect(componentInstance.props.cakeFormDetails.details.imageUrl.value).toBe('http://www.abc.com/abc.jpg');
+    expect(componentInstance.props.cakeFormDetails.details.yumFactor).toBe(1);
+  })
 
-    expect(root.getElementsByTagName('input')[0].value).toBe('My Cake');
-    expect(root.getElementsByTagName('input')[1].value).toBe('http://www.abc.com/abc.jpg');
-    expect(root.getElementsByTagName('input')[2].value).toBe('Nice One');
-    expect(root.getElementsByTagName('select')[0].value).toBe('1');
+
+
+  it('form should be valid in case all fields as field', () => {
+    const mock = fetchMock.postOnce(BASE_URL, JSON.stringify(mockResponse));
+    const root = document.createElement('div');
+    const props = { cakeFormDetails: mockAddCakeFormData };
+    const component = mount(
+      <Provider store={store}><Router><div><Route render={() => {
+        return <AddCakeComponent
+          updateCakeList={(event, data) => { return updateCakeInfoList(event) }}
+          cakeFormDetails={props.cakeFormDetails} />
+      }}></Route></div></Router></Provider>);
+      const componentInstance = component.find(AddCakeComponent).instance();
+    expect(componentInstance.props.cakeFormDetails.details.name.value).toBe('My Cake');
+    expect(componentInstance.props.cakeFormDetails.details.comment.value).toBe('Nice One');
+    expect(componentInstance.props.cakeFormDetails.details.imageUrl.value).toBe('http://www.abc.com/abc.jpg');
+    expect(componentInstance.props.cakeFormDetails.details.yumFactor).toBe(1);
+    expect(componentInstance.validateCompleteForm()).toBe(true);
+    componentInstance.addCake();
+    const subscription = store.subscribe(() => {
+      const state = store.getState();
+      expect(state.cakeFormDetails.details.name.value).toBe('My Cake');
+      expect(state.cakeFormDetails.details.comment.value).toBe('Nice One');
+      expect(state.cakeFormDetails.details.imageUrl.value).toBe('http://www.abc.com/abc.jpg');
+      expect(state.cakeFormDetails.details.yumFactor).toBe(1);
+      subscription();
+    })
+  })
+
+  it('state should change if user enter anything in form on handleOnChange', () => {
+    const mock = fetchMock.postOnce(BASE_URL, JSON.stringify(mockResponse));
+    const root = document.createElement('div');
+    const props = { cakeFormDetails: mockAddCakeFormData };
+    const event = {
+      target: {
+        name: 'name',
+        value: 'Brownie Cake'
+      }
+    };
+    const component = mount(
+      <Provider store={store}><Router><div><Route render={() => {
+        return <AddCakeComponent
+          updateCakeList={(event, data) => { return updateCakeInfoList(event) }}
+          cakeFormDetails={props.cakeFormDetails} />
+      }}></Route></div></Router></Provider>);
+    let componentInstance = component.find(AddCakeComponent).instance();
+    
+    componentInstance.handleOnChange(event);
+    const subscription = store.subscribe(() => {
+      const state = store.getState();
+      expect(state.cakeFormDetails.details.name.value).toBe('Brownie Cake');
+      subscription();
+    })
+  })
+
+  it('it should reset form data in resetModels method and form should not be valid', () => {
+    const mock = fetchMock.postOnce(BASE_URL, JSON.stringify(mockResponse));
+    const root = document.createElement('div');
+    const props = { cakeFormDetails: mockAddCakeFormData };
+    const component = mount(
+      <Provider store={store}><Router><div><Route render={() => {
+        return <AddCakeComponent
+          updateCakeList={(event, data) => { return updateCakeInfoList(event) }}
+          cakeFormDetails={props.cakeFormDetails} />
+      }}></Route></div></Router></Provider>);
+    const componentInstance = component.find(AddCakeComponent).instance();
+
+    componentInstance.resetModels();
+    expect(componentInstance.props.cakeFormDetails.details.name.value).toBe('');
+    expect(componentInstance.props.cakeFormDetails.details.comment.value).toBe('');
+    expect(componentInstance.props.cakeFormDetails.details.imageUrl.value).toBe('');
+    expect(componentInstance.props.cakeFormDetails.details.yumFactor).toBe(1);
+    expect(componentInstance.validateCompleteForm()).toBe(false);
   })
 })
 
-function updateCakeInfoList(event) {
-  AppActions.processAction(event, store.dispatch);
+function updateCakeInfoList(action) {
+  store.dispatch(AppActions.processAction(action));
 }

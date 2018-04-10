@@ -1,5 +1,5 @@
 import React from 'react';
-import AppConstant from '../../constants/constants.js';
+import AppActions from '../../actions/app.actions.js';
 
 // Keep it here as tt is used only this file
 const YUM_FACTORS = [1, 2, 3, 4, 5];
@@ -38,8 +38,7 @@ export default class AddCakeComponent extends React.Component {
                 this.props.cakeFormDetails.details[target].isTouched = true;
                 this.validate(target);
             }
-            this.props.updateCakeList({ type: AppConstant.CAKE_FORM_DATA, data: this.props.cakeFormDetails });
-
+            this.props.updateCakeList( AppActions.updateFormDetailsAction(this.props.cakeFormDetails));
         }
     }
 
@@ -53,7 +52,7 @@ export default class AddCakeComponent extends React.Component {
             name: { value: '', isTouched: false },
             comment: { value: '', isTouched: false }
         };
-        this.props.updateCakeList({ type: AppConstant.CAKE_FORM_DATA, data: this.props.cakeFormDetails });
+        this.props.updateCakeList( AppActions.updateFormDetailsAction(this.props.cakeFormDetails));
     }
 
     /**
@@ -61,7 +60,7 @@ export default class AddCakeComponent extends React.Component {
      */
     addCake() {
         if (this.validateCompleteForm()) {
-           this.props.updateCakeList({ type: AppConstant.SUBMIT_CAKE, data: this.props.cakeFormDetails });
+            this.props.updateCakeList(AppActions.submitCakeDetailsAction(this.props.cakeFormDetails));
         }
     }
 
@@ -71,7 +70,7 @@ export default class AddCakeComponent extends React.Component {
      */
     validate(target) {
         this.props.cakeFormDetails.details[target].isValid = this.props.cakeFormDetails.details[target].value.trim() !== '';
-        this.props.updateCakeList({ type: AppConstant.CAKE_FORM_DATA, data: this.props.cakeFormDetails });
+       this.props.updateCakeList( AppActions.updateFormDetailsAction(this.props.cakeFormDetails));
     }
 
     /**

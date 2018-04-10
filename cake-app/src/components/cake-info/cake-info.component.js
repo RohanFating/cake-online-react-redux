@@ -2,7 +2,7 @@ import React from 'react';
 import {
   Link
 } from 'react-router-dom';
-import AppConstant from '../../constants/constants.js';
+import AppActions from '../../actions/app.actions.js';
 
 /**
  * CakeInfoComponent - To show list of all cakes to users
@@ -13,7 +13,7 @@ export default class CakeInfoComponent extends React.Component {
    * componentDidMount Lifecycle Hook
    */
   componentDidMount() {
-    this.props.updateCakeList({ type: AppConstant.CAKE_INFO_LIST, data: '' });
+   this.props.updateCakeList(AppActions.getCakeInfoAction(''));
   }
 
   /**

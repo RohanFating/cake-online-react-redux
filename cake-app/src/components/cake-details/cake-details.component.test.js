@@ -43,7 +43,7 @@ describe('Cake Details Component should', () => {
       })
   })
 
-  it('be created without crash and get complete cake details data', ()=>{
+  it('show error message in case of cake details service error', ()=> {
     fetchMock.getOnce(`${BASE_URL}/sdfdsfreff45w23`, { status: 401, body: 'Error Response ' });
     const root = document.createElement('div');
     const props = {details: mockResponse[0], isError: true };
@@ -63,14 +63,28 @@ describe('Cake Details Component should', () => {
       })
   })
 
+  it('cake details data should be reseted on unmountComponent', ()=> {
+    fetchMock.getOnce(`${BASE_URL}/sdfdsfreff45w23`, { status: 401, body: 'Error Response ' });
+    const root = document.createElement('div');
+    const props = {details: mockResponse[0], isError: true };
+    let match = { match: { params: { id: 'sdfdsfreff45w23'}}};
+    const state = store.getState();
+    ReactDOM.render(
+    <Provider store={store}><Router><div><Route render={()=>{ return <CakeDetailComponent match={match}
+        updateCakeList ={(event, data)=> { return updateCakeInfoList(event)}} 
+        cakeDetails={ props }/> }}></Route></div></Router></Provider>, root);
+
+        const storeSubscription = store.subscribe(() => {
+          const state = store.getState();
+          expect(state.cakeDetails.details.name).toBe('');
+          expect(state.cakeDetails.details.imageUrl).toBe('');
+          expect(state.cakeDetails.details.comment).toBe('');
+          storeSubscription();
+      })
+    ReactDOM.unmountComponentAtNode(root);
+  })
 })
 
 function updateCakeInfoList(event) {
-AppActions.processAction( event, store.dispatch );
-}
-
-function mapStateToProps(state) {
-  return {
-    cakeFormDetails: state.cakeFormDetails,
-  };
+  store.dispatch(AppActions.processAction( event ) );
 }

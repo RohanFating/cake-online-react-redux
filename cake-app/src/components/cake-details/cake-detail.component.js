@@ -1,5 +1,5 @@
 import React from 'react';
-import AppConstant from '../../constants/constants.js';
+import AppActions from '../../actions/app.actions.js';
 /**
  * CakeDetailComponent - To show details of cake
  */
@@ -9,7 +9,7 @@ export default class CakeDetailComponent extends React.Component {
      * componentDidMount Lifecycle Hook
      */
     componentDidMount() {
-        this.props.updateCakeList({ type: AppConstant.CAKE_DETAILS, data: this.props.match.match.params.id });
+        this.props.updateCakeList(AppActions.getCakeDetailsAction(this.props.match.match.params.id));
     }
 
     /**
@@ -26,7 +26,7 @@ export default class CakeDetailComponent extends React.Component {
             },
           isError: false
         };
-        this.props.updateCakeList({ type: AppConstant.RESET_DETAILS_DATA, data: cakeDetails });
+        this.props.updateCakeList(AppActions.resetCakeDetailsAction(cakeDetails));
     }
     /**
      * To render cake details screen

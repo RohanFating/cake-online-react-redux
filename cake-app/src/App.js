@@ -4,23 +4,26 @@ import './App.css';
 import CakeInfoComponent from './components/cake-info/cake-info.component.js';
 import AddCakeComponent from './components/add-cake/add-cake.component.js';
 import CakeDetailComponent from './components/cake-details/cake-detail.component.js';
-import AppActions from './actions/app.actions.js';
 import {
   BrowserRouter as Router,
   Route,
 } from 'react-router-dom';
 
+import AppActions from './actions/app.actions.js';
+// import AppActionUtil from './actions/action.util.js';
 class App extends Component {
 
   /**
    * To dispatch event 
-   * @param event - name of event 
-   * @param data - data respective to the event event
+   * @param action - actions to be dispatch 
    */
-  updateCakeInfoList(event){
-    AppActions.processAction( event, this.props.store.dispatch );
+  updateCakeInfoList(action){
+    this.props.store.dispatch(AppActions.processAction(action));
   }
 
+  handleMe(){
+    return true;
+  }
   render() {
     return (
       <div className="container">
@@ -35,15 +38,15 @@ class App extends Component {
             <div className="col-md-12">
               <Route exact path="/" render={()=> {
                 return <CakeInfoComponent 
-                updateCakeList ={(event, data)=> { return this.updateCakeInfoList(event)}} 
+                updateCakeList ={(event)=> { return this.updateCakeInfoList(event)}} 
                 cakeInfo={ this.props.cakeInfo }/> }} />
               <Route path="/cake-detail/:id" render={(match)=> {
                 return <CakeDetailComponent match={match}
                 cakeDetails={ this.props.cakeDetails }
-                 updateCakeList ={(event, data)=> { return this.updateCakeInfoList(event, data)}}/> }} />
+                 updateCakeList ={(event)=> { return this.updateCakeInfoList(event)}}/> }} />
               <Route path="/add-cake" render={()=> {
                 return <AddCakeComponent cakeFormDetails={ this.props.cakeFormDetails }  
-                updateCakeList ={(event, data)=> { return this.updateCakeInfoList(event, data)}} /> }}/>
+                updateCakeList ={(event)=> { return this.updateCakeInfoList(event)}} /> }}/>
             </div>
           </Router>
           </Provider>
