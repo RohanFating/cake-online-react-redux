@@ -21,9 +21,6 @@ class App extends Component {
     this.props.store.dispatch(AppActions.processAction(action));
   }
 
-  handleMe(){
-    return true;
-  }
   render() {
     return (
       <div className="container">
